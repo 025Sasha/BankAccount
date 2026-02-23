@@ -68,3 +68,17 @@ def test_withdraw_insufficient_funds_raises():
     a = BankAccount("Sasha", 10)
     with pytest.raises(ValueError, match="Not enough money"):
         a.withdraw(20)
+
+##########################################################################################
+#Tests for BankAccount.transfer_to
+
+def test_transfer_to_ok():
+    balance_a = 100
+    balance_b = 10
+
+    a = BankAccount("Sasha", 100)
+    b = BankAccount("Masha", 10)
+    a.transfer_to(b, 10)
+
+    assert a.balance == 90
+    assert b.balance == 20
