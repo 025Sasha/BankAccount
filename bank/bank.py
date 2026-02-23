@@ -1,5 +1,5 @@
 class BankAccount:
-    def __init__(self, owner: str, balance: int = 0):
+    def __init__(self, owner: str, balance: float = 0):
         if not isinstance(balance, (int, float)) or isinstance(balance, bool):
             raise TypeError("Balance must be an integer or float")
         if balance < 0:
@@ -27,6 +27,12 @@ class BankAccount:
             self.history.append(f"WITHDRAW -{amount}")
 
     def transfer_to(self, other: "BankAccount", amount: int):
+        if other is None:
+            raise ValueError("Target account is missing")
+        if not isinstance(other, BankAccount):
+            raise TypeError("Target must be a BankAccount")
+        if other is self:
+            raise ValueError("Cannot transfer to the same account")
         self.withdraw(amount, log=False)
         self.history.append(f"TRANSFER_OUT -{amount} to {other.owner}")
         other.deposit(amount, log=False)
