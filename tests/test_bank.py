@@ -76,9 +76,20 @@ def test_transfer_to_ok():
     balance_a = 100
     balance_b = 10
 
-    a = BankAccount("Sasha", 100)
+    a = BankAccount("Sasha", balance_a)
     b = BankAccount("Masha", 10)
     a.transfer_to(b, 10)
 
-    assert a.balance == 90
-    assert b.balance == 20
+    assert a.balance == balance_a - 10
+    assert b.balance == balance_b + 10
+
+def test_transfer_to_not_enough_money_raises_value_error():
+    balance_a = 100
+    balance_b = 10
+
+    a = BankAccount("Sasha", balance_a)
+    b = BankAccount("Masha", 10)
+    with pytest.raises(ValueError, match = "Not enough money"):
+        a.transfer_to(b, 110)
+
+    
